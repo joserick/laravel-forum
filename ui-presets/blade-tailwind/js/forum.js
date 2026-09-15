@@ -110,6 +110,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     feather.replace();
 
+    function initializeQuill(textarea) {
+        const container = document.createElement('div');
+        textarea.parentNode.insertBefore(container, textarea.nextSibling);
+        textarea.style.display = 'none';
+
+        const quill = new window.Quill(container, { theme: 'snow' });
+
+        if (textarea.value) {
+            quill.clipboard.dangerouslyPasteHTML(textarea.value);
+        }
+
+        const sync = () => {
+            textarea.value = quill.root.innerHTML;
+        };
+
+        quill.on('text-change', sync);
+
+        const form = textarea.closest('form');
+        if (form) {
+            form.addEventListener('submit', sync);
+        }
+    }
+
+    document.querySelectorAll('[data-forum-editor="quill"]').forEach(textarea => {
+        if (typeof window.Quill === 'undefined') return;
+        initializeQuill(textarea);
+    });
+
     const input = document.querySelector('input[name=color_light_mode]');
 
     if (!input) return;

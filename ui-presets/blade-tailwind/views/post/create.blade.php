@@ -20,7 +20,7 @@
             @endif
 
             <div class="mb-3">
-                <x-forum::textarea name="content" class="w-full min-h-48">{{ old('content') }}</x-forum::textarea>
+                <x-forum::editor name="content" class="w-full min-h-48">{{ old('content') }}</x-forum::editor>
             </div>
 
             <div class="flex justify-end items-center gap-4">

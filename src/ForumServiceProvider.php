@@ -25,6 +25,7 @@ use TeamTeaTime\Forum\{
     Frontend\Presets\PresetRegistry,
     Frontend\Presets\LivewireTailwindPreset,
     Frontend\Presets\BladeTailwindPreset,
+    Frontend\Editors\EditorManager,
     Frontend\Stacks\Blade,
     Frontend\Stacks\Livewire,
     Http\Middleware\ResolveApiParameters,
@@ -64,6 +65,7 @@ class ForumServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ContentManager::class);
+        $this->app->singleton(EditorManager::class);
     }
 
     public function boot(Router $router, GateContract $gate)

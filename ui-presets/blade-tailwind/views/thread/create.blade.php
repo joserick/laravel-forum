@@ -13,7 +13,7 @@
             </div>
 
             <div class="mb-3">
-                <x-forum::textarea name="content" class="w-full">{{ old('content') }}</x-forum::textarea>
+                <x-forum::editor name="content" class="w-full">{{ old('content') }}</x-forum::editor>
             </div>
 
             <div class="text-end">

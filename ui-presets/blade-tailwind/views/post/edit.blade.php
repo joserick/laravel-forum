@@ -17,7 +17,7 @@
             @method('PATCH')
 
             <div class="mb-3">
-                <x-forum::textarea name="content" class="w-full">{{ old('content') !== null ? old('content') : $post->content }}</x-forum::textarea>
+                <x-forum::editor name="content" class="w-full">{{ old('content') !== null ? old('content') : $post->content }}</x-forum::editor>
             </div>
 
             <div class="flex items-center gap-4 justify-end">

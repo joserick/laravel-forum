@@ -27,6 +27,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Editor
+    |--------------------------------------------------------------------------
+    |
+    | The rich text editor to use for post and thread content. Available
+    | drivers are registered with the editor manager; the package ships with
+    | a 'quill' driver. Set 'driver' to null to disable rich text editing and
+    | use the default textarea.
+    |
+    | source: Where the editor's assets are loaded from. 'cdn' emits the
+    | driver's CDN stylesheet and script tags automatically. 'bundled' emits
+    | no tags and expects you to import the editor yourself in your
+    | application's assets. Note that the server always sanitizes content on
+    | write regardless of this setting.
+    |
+    | cdn: Optional per-driver overrides for the CDN assets used when source
+    | is 'cdn'. Each entry accepts 'css' and 'js' arrays of URLs.
+    |
+    */
+
+    'editor' => [
+        'driver' => null,
+
+        'source' => 'cdn',
+
+        'cdn' => [],
+
+        'options' => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Router
     |--------------------------------------------------------------------------
     |
