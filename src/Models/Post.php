@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User;
 use TeamTeaTime\Forum\Models\Traits\HasApproval;
 use TeamTeaTime\Forum\Models\Traits\HasAuthor;
 use TeamTeaTime\Forum\Models\Traits\HasSoftDeletion;
+use TeamTeaTime\Forum\Support\Content\ContentManager;
 use TeamTeaTime\Forum\Support\Frontend\Forum;
 
 class Post extends BaseModel
@@ -25,6 +26,7 @@ class Post extends BaseModel
         'post_id',
         'sequence',
         'content',
+        'content_html',
         'approved_at',
     ];
     protected $appends = ['route'];
@@ -77,6 +79,13 @@ class Post extends BaseModel
     {
         return new Attribute(
             get: fn() => Forum::route('thread.show', $this),
+        );
+    }
+
+    protected function renderedContent(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->content_html ?? app(ContentManager::class)->render($this->content ?? ''),
         );
     }
 

@@ -21,7 +21,8 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.0",
-        "aimeos/laravel-nestedset": "^7.1"
+        "aimeos/laravel-nestedset": "^7.1",
+        "symfony/html-sanitizer": "^7.0"
     },
     "require-dev": {
         "orchestra/testbench": "^11.0"

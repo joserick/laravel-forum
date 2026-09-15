@@ -2,12 +2,14 @@
 
 namespace TeamTeaTime\Forum\Support\Validation;
 
+use TeamTeaTime\Forum\Support\Validation\Rules\MinimumContentLength;
+
 class PostRules
 {
     public static function create(): array
     {
         return [
-            'content' => ['required', 'string', 'min:'.config('forum.general.validation.content_min')],
+            'content' => ['required', 'string', new MinimumContentLength(config('forum.general.validation.content_min'))],
         ];
     }
 

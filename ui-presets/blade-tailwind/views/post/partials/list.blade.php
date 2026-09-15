@@ -34,12 +34,12 @@
 
         @if ($post->trashed())
             @can ('viewTrashedPosts')
-                {!! Forum::render($post->content) !!}
+                {!! $post->renderedContent !!}
                 <br>
             @endcan
             <x-forum::badge type="danger">{{ trans('forum::general.deleted') }}</x-forum::badge>
         @else
-            {!! Forum::render($post->content) !!}
+            {!! $post->renderedContent !!}
         @endif
 
         @if (!isset($single) || !$single)

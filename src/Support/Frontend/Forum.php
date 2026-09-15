@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use TeamTeaTime\Forum\Models\Category;
 use TeamTeaTime\Forum\Models\Post;
 use TeamTeaTime\Forum\Models\Thread;
+use TeamTeaTime\Forum\Support\Content\ContentManager;
 
 class Forum
 {
@@ -24,7 +25,7 @@ class Forum
 
     public static function render(string $content): string
     {
-        return nl2br(e($content));
+        return app(ContentManager::class)->render($content);
     }
 
     public static function route(string $route, $model = null): string

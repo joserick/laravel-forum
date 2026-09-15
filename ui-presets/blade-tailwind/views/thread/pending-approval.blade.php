@@ -39,7 +39,7 @@
                                                 ({{ $thread->created_at->diffForHumans() }})
                                             </div>
                                             <div class="mt-2 text-sm text-gray-700">
-                                                {!! Forum::render($thread->firstPost->content) !!}
+                                                {!! $thread->firstPost->renderedContent !!}
                                             </div>
                                         </div>
                                     </div>

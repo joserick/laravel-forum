@@ -28,6 +28,9 @@ use TeamTeaTime\Forum\{
     Frontend\Stacks\Blade,
     Frontend\Stacks\Livewire,
     Http\Middleware\ResolveApiParameters,
+    Models\Observers\PostObserver,
+    Models\Post,
+    Support\Content\ContentManager,
 };
 
 class ForumServiceProvider extends ServiceProvider
@@ -58,11 +61,18 @@ class ForumServiceProvider extends ServiceProvider
         $app->instance(PresetRegistry::class, $presetRegistry);
     }
 
+    public function register(): void
+    {
+        $this->app->singleton(ContentManager::class);
+    }
+
     public function boot(Router $router, GateContract $gate)
     {
         $this->publishConfig();
         $this->publishMigrations();
         $this->publishTranslations();
+
+        Post::observe(PostObserver::class);
 
         if (config('forum.api.enable')) {
             $this->enableApi($router);
