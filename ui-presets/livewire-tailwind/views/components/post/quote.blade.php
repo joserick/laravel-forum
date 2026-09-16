@@ -1,5 +1,5 @@
 <div class="border border-slate-200 rounded-md p-6 mb-4 dark:border-slate-600">
-    {!! Forum::render($post->content) !!}
+    {!! $post->renderedContent !!}
     <div class="flex mt-4">
         <div class="grow">
             <span class="font-medium">

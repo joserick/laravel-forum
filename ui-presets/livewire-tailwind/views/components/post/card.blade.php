@@ -40,7 +40,7 @@
                 @if ($post->trashed())
                     @can ('viewTrashedPosts')
                         <div class="mb-4">
-                            {!! Forum::render($post->content) !!}
+                            {!! $post->renderedContent !!}
                         </div>
                     @endcan
 
@@ -53,7 +53,7 @@
                             :text="trans('forum::general.deleted')" />
                     </div>
                 @else
-                    {!! Forum::render($post->content) !!}
+                    {!! $post->renderedContent !!}
                 @endif
             </div>
 
