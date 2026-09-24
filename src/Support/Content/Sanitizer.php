@@ -35,6 +35,11 @@ class Sanitizer
 
         return $sanitizerConfig
             ->allowLinkSchemes($config['allowed_link_schemes'] ?? ['http', 'https', 'mailto'])
-            ->allowMediaSchemes($config['allowed_media_schemes'] ?? ['http', 'https']);
+            ->allowLinkHosts($config['allowed_link_hosts'] ?? null)
+            ->allowRelativeLinks($config['allow_relative_links'] ?? false)
+            ->allowMediaSchemes($config['allowed_media_schemes'] ?? ['http', 'https'])
+            ->allowMediaHosts($config['allowed_media_hosts'] ?? null)
+            ->allowRelativeMedias($config['allow_relative_medias'] ?? false)
+            ->forceHttpsUrls($config['force_https_urls'] ?? false);
     }
 }

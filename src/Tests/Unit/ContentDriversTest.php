@@ -66,6 +66,64 @@ class ContentDriversTest extends FeatureTestCase
     }
 
     #[Test]
+    public function html_driver_retains_relative_media_when_enabled()
+    {
+        config(['forum.general.content.sanitizer.allow_relative_medias' => true]);
+
+        $prepared = $this->manager('html')->prepare('<img src="/storage/forum/foo.webp" alt="x">');
+
+        $this->assertStringContainsString('src="/storage/forum/foo.webp"', $prepared);
+    }
+
+    #[Test]
+    public function html_driver_drops_relative_media_when_disabled()
+    {
+        config(['forum.general.content.sanitizer.allow_relative_medias' => false]);
+
+        $prepared = $this->manager('html')->prepare('<img src="/storage/forum/foo.webp" alt="x">');
+
+        $this->assertStringContainsString('<img', $prepared);
+        $this->assertStringNotContainsString('src=', $prepared);
+    }
+
+    #[Test]
+    public function html_driver_retains_relative_links_when_enabled()
+    {
+        config(['forum.general.content.sanitizer.allow_relative_links' => true]);
+
+        $prepared = $this->manager('html')->prepare('<a href="/threads/1">link</a>');
+
+        $this->assertStringContainsString('href="/threads/1"', $prepared);
+    }
+
+    #[Test]
+    public function html_driver_restricts_media_hosts_when_configured()
+    {
+        config(['forum.general.content.sanitizer.allowed_media_hosts' => ['cdn.example.com']]);
+
+        $manager = $this->manager('html');
+
+        $this->assertStringContainsString(
+            'src="https://cdn.example.com/a.webp"',
+            $manager->prepare('<img src="https://cdn.example.com/a.webp">')
+        );
+        $this->assertStringNotContainsString(
+            'src=',
+            $manager->prepare('<img src="https://evil.example.org/a.webp">')
+        );
+    }
+
+    #[Test]
+    public function html_driver_forces_https_when_enabled()
+    {
+        config(['forum.general.content.sanitizer.force_https_urls' => true]);
+
+        $prepared = $this->manager('html')->prepare('<img src="http://example.com/a.webp">');
+
+        $this->assertStringContainsString('src="https://example.com/a.webp"', $prepared);
+    }
+
+    #[Test]
     public function unknown_driver_throws_exception()
     {
         $this->expectException(InvalidArgumentException::class);

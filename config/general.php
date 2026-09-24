@@ -95,6 +95,18 @@ return [
     | 'markdown' formats). Only the elements, attributes and URL schemes
     | listed here will be retained in stored content.
     |
+    |   allow_relative_links / allow_relative_medias: Whether relative URLs
+    |   (e.g. /storage/forum/images/foo.webp) are retained in link href and
+    |   media src attributes respectively. Relative media are allowed by
+    |   default so application-hosted uploads work without embedding the
+    |   application URL into stored content.
+    |
+    |   allowed_link_hosts / allowed_media_hosts: Optional allow-list of
+    |   hosts. When set, only URLs on those hosts (and their subdomains) are
+    |   retained; null allows any host.
+    |
+    |   force_https_urls: Whether http URLs are rewritten to https.
+    |
     */
 
     'content' => [
@@ -120,6 +132,16 @@ return [
             'allowed_link_schemes' => ['http', 'https', 'mailto'],
 
             'allowed_media_schemes' => ['http', 'https'],
+
+            'allow_relative_links' => false,
+
+            'allow_relative_medias' => true,
+
+            'allowed_link_hosts' => null,
+
+            'allowed_media_hosts' => null,
+
+            'force_https_urls' => false,
         ],
     ],
 
