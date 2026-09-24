@@ -44,6 +44,13 @@ return [
     | cdn: Optional per-driver overrides for the CDN assets used when source
     | is 'cdn'. Each entry accepts 'css' and 'js' arrays of URLs.
     |
+    | options: Driver-specific options passed to the client-side editor
+    | instance. For the 'quill' driver these are merged into Quill's own
+    | configuration (for example a custom toolbar under 'modules.toolbar').
+    | Values must be JSON-serializable; to wire up a custom toolbar handler,
+    | set the value to the name of a global JavaScript function and the
+    | adapter will resolve it at runtime.
+    |
     */
 
     'editor' => [

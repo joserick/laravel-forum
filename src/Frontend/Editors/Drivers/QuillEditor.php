@@ -6,11 +6,11 @@ use TeamTeaTime\Forum\Frontend\Editors\Contracts\Editor;
 
 class QuillEditor implements Editor
 {
-    private array $cdn;
-
-    public function __construct(array $cdn = [])
+    public function __construct(
+        private array $cdn = [],
+        private array $options = [],
+    )
     {
-        $this->cdn = $cdn;
     }
 
     public function getName(): string
@@ -38,5 +38,10 @@ class QuillEditor implements Editor
                 'https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js',
             ],
         ];
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }

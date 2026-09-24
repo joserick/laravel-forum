@@ -10,6 +10,57 @@ window.axios = axios;
 window.Vue = { createApp, ref, reactive, watch, computed };
 window.VueDraggable = draggable;
 
+function deepMerge(target, source) {
+    const result = { ...target };
+
+    for (const [key, value] of Object.entries(source ?? {})) {
+        const isPlainObject = value !== null && typeof value === 'object' && !Array.isArray(value);
+        const canMerge = isPlainObject && typeof result[key] === 'object' && result[key] !== null && !Array.isArray(result[key]);
+
+        result[key] = canMerge ? deepMerge(result[key], value) : value;
+    }
+
+    return result;
+}
+
+function resolveEditorHandlers(options) {
+    const handlers = options?.modules?.toolbar?.handlers;
+
+    if (!handlers) return options;
+
+    for (const [name, handler] of Object.entries(handlers)) {
+        if (typeof handler !== 'string') continue;
+
+        handlers[name] = function (...args) {
+            const callback = window[handler];
+
+            if (typeof callback === 'function') {
+                return callback.apply(this, args);
+            }
+
+            console.warn(`[forum] The toolbar handler "${handler}" is not defined.`);
+        };
+    }
+
+    return options;
+}
+
+function parseEditorOptions(element) {
+    let parsed = {};
+
+    const raw = element?.dataset?.forumEditorOptions;
+
+    if (raw) {
+        try {
+            parsed = JSON.parse(raw);
+        } catch (error) {
+            console.warn('[forum] Ignoring an invalid data-forum-editor-options value.', error);
+        }
+    }
+
+    return resolveEditorHandlers(deepMerge({ theme: 'snow' }, parsed));
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     createApp({
         setup() {
@@ -115,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
         textarea.parentNode.insertBefore(container, textarea.nextSibling);
         textarea.style.display = 'none';
 
-        const quill = new window.Quill(container, { theme: 'snow' });
+        const quill = new window.Quill(container, parseEditorOptions(textarea));
 
         if (textarea.value) {
             quill.clipboard.dangerouslyPasteHTML(textarea.value);

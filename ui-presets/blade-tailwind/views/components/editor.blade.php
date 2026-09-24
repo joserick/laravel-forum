@@ -7,4 +7,4 @@
     @endforeach
 @endif
 
-<textarea @if ($editor !== null)data-forum-editor="{{ $editor->getDataAttribute() }}" @endif{{ $attributes->merge(['class' => 'px-3 py-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md border shadow-sm']) }}>{{ $slot }}</textarea>
+<textarea @if ($editor !== null)data-forum-editor="{{ $editor->getDataAttribute() }}" @if (! empty($editor->getOptions())) data-forum-editor-options="{{ json_encode($editor->getOptions()) }}" @endif @endif{{ $attributes->merge(['class' => 'px-3 py-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md border shadow-sm']) }}>{{ $slot }}</textarea>

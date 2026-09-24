@@ -28,6 +28,9 @@ class EditorManager extends Manager
 
     protected function createQuillDriver(): Editor
     {
-        return new QuillEditor($this->config->get('forum.frontend.editor.cdn.quill', []));
+        return new QuillEditor(
+            $this->config->get('forum.frontend.editor.cdn.quill', []),
+            $this->config->get('forum.frontend.editor.options', []),
+        );
     }
 }

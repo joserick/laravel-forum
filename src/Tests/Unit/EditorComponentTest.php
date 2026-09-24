@@ -67,6 +67,46 @@ class EditorComponentTest extends FeatureTestCase
     }
 
     #[Test]
+    public function forwards_editor_options_to_the_textarea()
+    {
+        $options = [
+            'modules' => [
+                'toolbar' => [
+                    'container' => [['bold', 'italic']],
+                    'handlers' => ['image' => 'AppQuillImageHandler'],
+                ],
+            ],
+        ];
+
+        config([
+            'forum.frontend.editor.driver' => 'quill',
+            'forum.frontend.editor.source' => 'cdn',
+            'forum.frontend.editor.options' => $options,
+        ]);
+        $this->app->forgetInstance(EditorManager::class);
+
+        $view = $this->renderEditor('<x-forum::editor name="content"></x-forum::editor>');
+
+        $view->assertSee('data-forum-editor-options', false);
+        $view->assertSee(json_encode($options));
+    }
+
+    #[Test]
+    public function does_not_emit_an_options_attribute_without_configured_options()
+    {
+        config([
+            'forum.frontend.editor.driver' => 'quill',
+            'forum.frontend.editor.source' => 'cdn',
+            'forum.frontend.editor.options' => [],
+        ]);
+        $this->app->forgetInstance(EditorManager::class);
+
+        $view = $this->renderEditor('<x-forum::editor name="content"></x-forum::editor>');
+
+        $view->assertDontSee('data-forum-editor-options', false);
+    }
+
+    #[Test]
     public function forwards_additional_attributes()
     {
         config(['forum.frontend.editor.driver' => null]);

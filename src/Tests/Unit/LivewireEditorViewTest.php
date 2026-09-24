@@ -63,4 +63,30 @@ class LivewireEditorViewTest extends FeatureTestCase
         $this->assertStringNotContainsString('$wire.entangle', $html);
         $this->assertStringNotContainsString('quill.js', $html);
     }
+
+    #[Test]
+    public function forwards_editor_options_to_the_editor_wrapper()
+    {
+        $options = [
+            'modules' => [
+                'toolbar' => [
+                    'container' => [['bold', 'italic']],
+                    'handlers' => ['image' => 'AppQuillImageHandler'],
+                ],
+            ],
+        ];
+
+        $html = $this->render(new QuillEditor([], $options), ['wire:model' => 'content']);
+
+        $this->assertStringContainsString('data-forum-editor-options', $html);
+        $this->assertStringContainsString(htmlspecialchars(json_encode($options), ENT_QUOTES, 'UTF-8'), $html);
+    }
+
+    #[Test]
+    public function does_not_emit_an_options_attribute_without_configured_options()
+    {
+        $html = $this->render(new QuillEditor, ['wire:model' => 'content']);
+
+        $this->assertStringNotContainsString('data-forum-editor-options', $html);
+    }
 }

@@ -2,6 +2,7 @@
     $wireModelAttributes = $attributes->whereStartsWith('wire:model')->getAttributes();
     $wireModel = reset($wireModelAttributes) ?: null;
     $usesEditor = $editor !== null && $wireModel !== null;
+    $editorOptions = $usesEditor && ! empty($editor->getOptions()) ? json_encode($editor->getOptions()) : null;
 @endphp
 
 @if ($usesEditor && $source === 'cdn')
@@ -22,6 +23,7 @@
         <div
             wire:ignore
             wire:key="forum-editor-{{ $wireModel }}"
+            @if ($editorOptions) data-forum-editor-options="{{ $editorOptions }}" @endif
             x-data="forumEditor($wire.entangle('{{ $wireModel }}'), '{{ $editor->getDataAttribute() }}')"
             x-init="init($refs.editor)">
             <div x-ref="editor" x-show="quill"></div>
